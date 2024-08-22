@@ -17,4 +17,15 @@ class ProductRepository implements IProductRepository
     {
         return Product::with('variants')->findOrFail($id);
     }
+
+    public function createProduct(array $data)
+    {
+           return Product::create($data);
+    }
+
+    public function deleteProduct($id){
+
+        $product = $this->getProductById($id);
+        $product->delete();
+    }
 }

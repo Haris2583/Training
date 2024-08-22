@@ -16,14 +16,17 @@ use App\Models\Practice;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::post('/store',[PracticeController::class, 'store']);
+use App\Models\User;
 Route::get('/index-page',[PracticeController::class, 'index']);
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 
+Route::get('/create', [ProductController::class, 'create'])->name('products.create');
 
+Route::post('/store', [ProductController::class, 'store'])->name('products.store');
+
+Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.delete');
 
 Route::get('/', function () {
     return view('welcome');

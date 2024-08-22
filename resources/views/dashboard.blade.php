@@ -12,6 +12,8 @@
                     {{ __("You're logged in!") }}
                 </div>
                 <a href="/products"><h3>View Products</h3> </a>
+                <a href="/create"><h3>Add Product</h3> </a>
+
             </div>
         </div>
     </div>

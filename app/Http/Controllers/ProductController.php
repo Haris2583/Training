@@ -33,7 +33,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('create');
     }
 
     /**
@@ -44,7 +44,16 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+        ]);
+    
+        $data['user_id'] = auth()->id();
+    
+        $this->productRepo->createProduct($data);
+        return redirect()->route('products.index');
     }
 
     /**
@@ -88,8 +97,16 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+        $product = $this->productRepo->getProductById($id);
+
+    if ($product) {
+        $this->productRepo->deleteProduct($id);
+        return redirect()->route('products.index');
+    } else {
+        return redirect()->route('products.index');
     }
+}
+    
 }
