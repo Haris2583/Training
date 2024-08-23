@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Product;
 use Illuminate\Support\Facades\Log;
+use App\Events\ProductEvent;
 
 class ProductObserver
 {
@@ -15,7 +16,7 @@ class ProductObserver
      */
     public function created(Product $product)
     {
-        Log::info('Product created:', ['id' => $product->id, 'title' => $product->title]);
+        event(new ProductEvent($product));
     }
 
     /**
