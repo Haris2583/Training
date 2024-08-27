@@ -17,7 +17,10 @@ class User extends Authenticatable
     return $this->hasMany(Product::class);
 }
 
-
+public function employer()
+    {
+        return $this->belongsTo(User::class, 'employer_id');
+    }
     /**
      * The attributes that are mass assignable.
      *

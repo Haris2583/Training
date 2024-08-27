@@ -34,8 +34,9 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required', 'string'], // Ensure role is included in validation
         ]);
-        $role = $request->input('role'); // Get the role from the request
-    \Log::info('Role selected during registration: ' . $role); // Log the role for debugging
+
+        $role = $request->input('role'); 
+        \Log::info('Role selected during registration: ' . $role); 
 
         $user = User::create([
             'name' => $request->name,
@@ -49,15 +50,10 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         // Redirect based on the user's role
-        if ($role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        } elseif ($role === 'employer') {
-            return redirect()->route('employer.dashboard');
-        } elseif ($role === 'job_seeker') {
-            return redirect()->route('job_seeker.dashboard');
-        }
-
-        // Redirect to the root route if no role match
-        return redirect('/');
+        return match ($role) {
+            'employer' => redirect()->route('employer.dashboard'),
+            'job_seeker' => redirect()->route('job_seeker.dashboard'),
+            default => redirect('/'), // If any unexpected role is provided
+        };
     }
 }

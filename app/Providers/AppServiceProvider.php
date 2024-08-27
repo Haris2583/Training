@@ -7,6 +7,8 @@ use App\Repositories\Interfaces\IProductRepository;
 use App\Repositories\ProductRepository;
 use App\Models\Product;
 use App\Observers\ProductObserver;  
+use App\Repositories\Interfaces\IJobRepository;
+use App\Repositories\JobRepository;
 
 
 
@@ -20,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(IProductRepository::class, ProductRepository::class);
+        $this->app->bind(IJobRepository::class, JobRepository::class);
     }
 
     /**

@@ -23,16 +23,7 @@
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
-         <!-- Role -->
-         <div class="mt-4">
-            <x-input-label for="role" :value="__('Role')" />
-            <select name="role" id="role" class="block mt-1 w-full" required>
-                <option value="admin">Admin</option>
-                <option value="employer">Employer</option>
-                <option value="job_seeker">Job Seeker</option>
-            </select>
-            <x-input-error :messages="$errors->get('role')" class="mt-2" />
-        </div>
+         
         
 
         <!-- Remember Me -->

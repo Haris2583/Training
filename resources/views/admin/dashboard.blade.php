@@ -13,7 +13,8 @@
             <nav>
                 <ul>
                     <li><a href="#">Manage Users</a></li>
-                    <li><a href="#">Manage Jobs</a></li>
+                    <li><a href="{{ route('admin.jobs.index') }}">Manage Jobs</a></li>
+
                     <li><a href="#">Settings</a></li>
                     <li>
                         <form method="POST" action="{{ route('admin.logout') }}" style="display:inline;">
