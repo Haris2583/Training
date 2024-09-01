@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(IProductRepository::class, ProductRepository::class);
         $this->app->bind(IJobRepository::class, JobRepository::class);
+        
     }
 
     /**

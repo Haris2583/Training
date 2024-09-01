@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Jobs</title>
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
@@ -87,14 +89,16 @@
             <h1>Admin Dashboard</h1>
             <nav>
                 <ul>
-                    <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                    <li><a href="#">Manage Users</a></li>
                     <li><a href="{{ route('admin.jobs.index') }}">Manage Jobs</a></li>
+
                     <li><a href="#">Settings</a></li>
                     <li>
-                        <form method="POST" action="{{ route('admin.logout') }}" style="display:inline;">
+                    <form method="POST" action="{{ route('admin.logout') }}" style="display:inline;">
                             @csrf
                             <button type="submit" class="logout-button">Logout</button>
                         </form>
+
                     </li>
                 </ul>
             </nav>
@@ -116,14 +120,16 @@
                                 <td>{{ $job->title }}</td>
                                 <td>{{ $job->employer->name }}</td>
                                 <td>
-                                    <form action="{{ route('jobs.approve', $job) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-success">Approve</button>
-                                    </form>
-                                    <form action="{{ route('jobs.reject', $job) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-danger">Reject</button>
-                                    </form>
+                                <form action="{{ route('jobs.approve', ['job' => $job->id]) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-success">Approve</button>
+                                        </form>
+
+                                        <form action="{{ route('jobs.reject', ['job' => $job->id]) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger">Reject</button>
+                                        </form>
+
                                 </td>
                             </tr>
                         @endforeach

@@ -29,8 +29,11 @@ class PostJob extends Model
     {
         return $this->belongsTo(User::class, 'employer_id');
     }
-
-    // Optionally, you can have a scope to filter jobs by status
+    
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
     public function scopeApproved($query)
     {
         return $query->where('status', JobStatus::Approved->value);

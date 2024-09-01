@@ -110,7 +110,7 @@
             </table>
         </main>
 
-        <footer>
+        <footer class="dashboard-footer">
             <p>&copy; 2024 YourCompany. All rights reserved.</p>
         </footer>
     </div>
