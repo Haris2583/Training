@@ -5,6 +5,7 @@ use App\Repositories\Interfaces\IJobRepository;
 use App\Models\PostJob;
 use App\Enums\JobStatus;
 use Illuminate\Http\Request;
+use App\Models\Application;
 use Log;
 
 class EmployerJobController extends Controller
@@ -66,7 +67,6 @@ class EmployerJobController extends Controller
     }
     public function edit(PostJob $job)
     {
-        // Ensure the job belongs to the authenticated employer
         if ($job->employer_id !== auth()->id()) {
             abort(403, 'Unauthorized action.');
         }
@@ -76,7 +76,6 @@ class EmployerJobController extends Controller
 
     public function update(Request $request, PostJob $job)
     {
-        // Ensure the job belongs to the authenticated employer
         if ($job->employer_id !== auth()->id()) {
             abort(403, 'Unauthorized action.');
         }
@@ -91,29 +90,33 @@ class EmployerJobController extends Controller
             'education' => 'required|string|max:255',
         ]);
 
+        $job->status='pending';
+
         $job->update($request->all());
-        return redirect()->route('employer.jobs.index')->with('success', 'Job updated successfully.');
+        return redirect()->route('employer.jobs.index')->with('alert', 'Job updated successfully.');
     }
 
     public function destroy(PostJob $job)
     {
-        // Ensure the job belongs to the authenticated employer
         if ($job->employer_id !== auth()->id()) {
             abort(403, 'Unauthorized action.');
         }
 
         $job->delete();
-        return redirect()->route('employer.jobs.index')->with('success', 'Job deleted successfully.');
+        return redirect()->route('employer.jobs.index')->with('alert', 'Job deleted successfully.');
     }
-
     public function showApplications(PostJob $job)
     {
-        // Ensure the job belongs to the authenticated employer
-        if ($job->employer_id !== auth()->id()) {
-            abort(403, 'Unauthorized action.');
-        }
-
-        $applications = $job->applications; // Assuming you have a relation for applications
-        return view('employer.job_applications', compact('job', 'applications'));
+        $applications = $job->applications; 
+        return view('employer.applications', compact('applications', 'job'));
+    }
+    
+    public function showApplicationDetails(Application $application)
+    {
+       
+        $application->status = 'viewed'; 
+        $application->save();
+    
+        return view('employer.application_details', compact('application'));
     }
 }

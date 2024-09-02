@@ -74,7 +74,7 @@
         <div class="form-header">
             <h1>Apply for {{ $job->title }}</h1>
         </div>
-        <form action="{{ route('job.apply', ['job' => $job->id]) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('job.store',  $job->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="name">Name</label>

@@ -59,6 +59,7 @@ Route::middleware(['auth', 'role:employer'])->group(function () {
     Route::put('/employer/jobs/{job}', [EmployerJobController::class, 'update'])->name('employer.jobs.update');
     Route::delete('/employer/jobs/{job}', [EmployerJobController::class, 'destroy'])->name('employer.jobs.destroy');
     Route::get('/employer/jobs/{job}/applications', [EmployerJobController::class, 'showApplications'])->name('employer.jobs.applications');
+    Route::get('/employer/applications/{application}', [EmployerJobController::class, 'showApplicationDetails'])->name('employer.applications.details');
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -69,11 +70,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 
 
+// routes/web.php
+
 Route::middleware(['auth', 'role:job_seeker'])->group(function () {
     Route::get('/job_seeker/dashboard', [JobSeekerController::class, 'index'])->name('job_seeker.dashboard');
     Route::get('/job/{job}', [JobSeekerController::class, 'show'])->name('job.show');
-    Route::post('/job/{job}/apply', [JobSeekerController::class, 'apply'])->name('job.apply');
+    Route::get('/job/{job}/apply', [JobSeekerController::class, 'apply'])->name('job.apply');
+    Route::post('/job/{job}/apply', [JobSeekerController::class, 'store'])->name('job.store');
+    Route::get('/job_seeker/dashboard/applications', [JobSeekerController::class, 'myApplications'])->name('job_seeker.applications');
 });
+
 
 
 

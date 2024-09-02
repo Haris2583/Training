@@ -32,8 +32,8 @@ class PostJob extends Model
     
     public function applications()
     {
-        return $this->hasMany(Application::class);
-    }
+        return $this->hasMany(Application::class, 'job_id');
+        }
     public function scopeApproved($query)
     {
         return $query->where('status', JobStatus::Approved->value);

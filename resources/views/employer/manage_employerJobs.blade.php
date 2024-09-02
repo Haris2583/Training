@@ -50,6 +50,13 @@
 </head>
 <body>
     <div class="container">
+    @if(session('alert'))
+            <div class="alert">
+                <script>
+                    alert("{{ session('alert') }}");
+                </script>
+            </div>
+        @endif
         <header class="dashboard-header">
             <h1>Employer Dashboard</h1>
             <nav>

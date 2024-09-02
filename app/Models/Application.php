@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\ApplicationStatus;
 
 class Application extends Model
 {
@@ -22,11 +23,15 @@ class Application extends Model
         'expected_salary',
         'current_salary',
         'cv_path',
+        'status',
     ];
 
+    protected $casts = [
+        'status' => ApplicationStatus::class,
+    ];
     public function job()
     {
-        return $this->belongsTo(PostJob::class);
+        return $this->belongsTo(PostJob::class, 'job_id');
     }
 
     public function user()

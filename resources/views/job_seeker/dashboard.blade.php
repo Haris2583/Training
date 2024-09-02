@@ -8,12 +8,20 @@
 </head>
 <body>
     <div class="dashboard-container">
+        @if(session('alert'))
+            <div class="alert">
+                <script>
+                    alert("{{ session('alert') }}");
+                </script>
+            </div>
+        @endif
+
         <header class="dashboard-header">
-            <h1>Job Seeker Dashboard</h1>
+        <h1>Job Seeker Dashboard</h1>
             <nav>
                 <ul>
-                    <li><a href="#">My Applications</a></li>
-                    <li><a href="#">Profile</a></li>
+                <li><a href="{{ route('job_seeker.applications') }}">My Applications</a></li>
+                <li><a href="#">Profile</a></li>
                     <li>
                         <form method="POST" action="{{ route('job_seeker.logout') }}" style="display:inline;">
                             @csrf
@@ -47,15 +55,12 @@
         document.addEventListener('DOMContentLoaded', function () {
             const searchInput = document.getElementById('jobSearch');
             const jobCards = document.querySelectorAll('.job-card');
-
             searchInput.addEventListener('keyup', function () {
                 const query = searchInput.value.toLowerCase();
-
                 jobCards.forEach(card => {
                     const title = card.querySelector('h3').textContent.toLowerCase();
                     const timing = card.querySelector('p').textContent.toLowerCase();
                     const experience = card.querySelector('p').textContent.toLowerCase();
-
                     if (title.includes(query) || timing.includes(query) || experience.includes(query)) {
                         card.style.display = '';
                     } else {
