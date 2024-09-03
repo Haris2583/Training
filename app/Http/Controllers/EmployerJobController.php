@@ -23,7 +23,6 @@ class EmployerJobController extends Controller
         $jobs = $this->jobRepository->getJobsByEmployer(auth()->id());
 
         foreach ($jobs as $job) {
-            // Ensure that the status is a string value
             $job->status = JobStatus::from($job->status->value)->value;
         }
 
@@ -118,5 +117,32 @@ class EmployerJobController extends Controller
         $application->save();
     
         return view('employer.application_details', compact('application'));
+    }
+
+    public function searchCandidates()
+    {
+        return view('employer.search_candidates');
+    }
+
+    public function displayCandidates(Request $request)
+    {
+        $query = Application::query();
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+        if ($request->filled('country')) {
+            $query->where('country', 'like', '%' . $request->input('country') . '%');
+        }
+        if ($request->filled('city')) {
+            $query->where('city', 'like', '%' . $request->input('city') . '%');
+        }
+        if ($request->filled('experience')) {
+            $query->where('experience', $request->input('experience'));
+        }
+
+        $candidates = $query->get();
+
+        return view('employer.display_candidates', compact('candidates'));
     }
 }

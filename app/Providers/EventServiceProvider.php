@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Event;
 use App\Models\Product;
 use App\Observers\ProductObserver;  
 use App\Events\ProductEvent;
+use App\Observers\ApplicationObserver;
+use App\Models\Application;
+use App\Listeners\SendApplicationNotification;
+use App\Events\ApplicationCreated;
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -21,7 +25,12 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        ProductEvent::class => [ ProductListener::class, ],
+
+
+        ApplicationCreated::class => [
+            SendApplicationNotification::class,
+        ],
+
     ];
 
     /**
@@ -29,19 +38,23 @@ class EventServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
-        Product::observe(ProductObserver::class);
-
-    }
+   
+     public function boot()
+     {
+ 
+         Application::observe(ApplicationObserver::class);
+     }
+ 
+     public function shouldDiscoverEvents()
+     {
+         return false;
+     }
+ 
 
     /**
      * Determine if events and listeners should be automatically discovered.
      *
      * @return bool
      */
-    public function shouldDiscoverEvents()
-    {
-        return false;
-    }
+    
 }

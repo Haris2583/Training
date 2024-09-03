@@ -1,4 +1,12 @@
 <x-guest-layout>
+ 
+    <h1 class="text-xl font-semibold text-center mb-2">Job Voyage</h1>
+    <p class="text-2xl font-semibold text-center mb-6">Indeed! you will get a job here</p>
+
+
+    <h1 class="text-xl font-semibold text-center mb-2">Registration</h1>
+
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 

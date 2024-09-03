@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ApplicationCreated;
 use Illuminate\Http\Request;
 use App\Models\PostJob;
 use App\Models\Application;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\Interfaces\IJobRepository;
 use App\Enums\ApplicationStatus;
+use Illuminate\Support\Facades\Hash;
 
 class JobSeekerController extends Controller
 {
@@ -43,7 +45,6 @@ class JobSeekerController extends Controller
         return view('job_seeker.job_application', compact('job'));
     }
 
-    // Store the application
     public function store(Request $request, PostJob $job)
     {
         if ($request->hasFile('cv')) {
@@ -67,7 +68,6 @@ class JobSeekerController extends Controller
     
         $cvPath = $request->file('cv')->store('cvs', 'public');
     
-        // Create the application
         $application = Application::create([
             'job_id' => $job->id,
             'user_id' => Auth::id(),
@@ -84,6 +84,7 @@ class JobSeekerController extends Controller
             'status'=> ApplicationStatus::NotViewed->value,
         ]);
     
+        ApplicationCreated::dispatch($application);
     
         return redirect()->route('job_seeker.dashboard')->with('alert', 'Application submitted successfully!');
     }
@@ -92,6 +93,29 @@ class JobSeekerController extends Controller
         $applications = Application::where('user_id', Auth::id())->with('job')->get();
         return view('job_seeker.my_applications', compact('applications'));
     }
+
+    public function profile()
+{
+    $user = auth()->user(); 
+    return view('job_seeker.profile', compact('user'));
+}
+
+public function updatePassword(Request $request)
+{
+    $request->validate([
+        'current_password' => 'required',
+        'new_password' => 'required|min:8|confirmed', 
+    ]);
+
+    if (!Hash::check($request->current_password, auth()->user()->password)) {
+        return back()->withErrors(['current_password' => 'Current password does not match our records.']);
+    }
+
+    auth()->user()->update(['password' => Hash::make($request->new_password)]);
+
+    return redirect()->route('job_seeker.profile')->with('success', 'Password updated successfully.');
+}
+
     
     
 }

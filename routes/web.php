@@ -7,6 +7,8 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\PostJobController;
 use App\Http\Controllers\EmployerJobController;
 use App\Http\Controllers\JobSeekerController;
+use App\Models\Application;
+use App\Events\ApplicationCreated;
 use App\Models\Practice;
 /*
 |--------------------------------------------------------------------------
@@ -60,17 +62,20 @@ Route::middleware(['auth', 'role:employer'])->group(function () {
     Route::delete('/employer/jobs/{job}', [EmployerJobController::class, 'destroy'])->name('employer.jobs.destroy');
     Route::get('/employer/jobs/{job}/applications', [EmployerJobController::class, 'showApplications'])->name('employer.jobs.applications');
     Route::get('/employer/applications/{application}', [EmployerJobController::class, 'showApplicationDetails'])->name('employer.applications.details');
+    Route::get('/employer/candidates/search', [EmployerJobController::class, 'searchCandidates'])->name('employer.candidates.search');
+    Route::get('/employer/candidates/results', [EmployerJobController::class, 'displayCandidates'])->name('employer.candidates.results');
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/jobs', [PostJobController::class, 'index'])->name('admin.jobs.index');
     Route::post('/admin/jobs/{job}/approve', [PostJobController::class, 'approve'])->name('jobs.approve');
     Route::post('/admin/jobs/{job}/reject', [PostJobController::class, 'reject'])->name('jobs.reject');
+    Route::get('/admin/users', [PostJobController::class, 'manageUsers'])->name('admin.manage_users');
+    Route::get('/admin/users/{id}/edit', [PostJobController::class, 'editUser'])->name('admin.edit_user');
+    Route::post('/admin/users/{id}/update', [PostJobController::class, 'updateUser'])->name('admin.update_user');
+    Route::delete('/admin/users/{id}/delete', [PostJobController::class, 'deleteUser'])->name('admin.delete_user');
 });
 
-
-
-// routes/web.php
 
 Route::middleware(['auth', 'role:job_seeker'])->group(function () {
     Route::get('/job_seeker/dashboard', [JobSeekerController::class, 'index'])->name('job_seeker.dashboard');
@@ -78,10 +83,20 @@ Route::middleware(['auth', 'role:job_seeker'])->group(function () {
     Route::get('/job/{job}/apply', [JobSeekerController::class, 'apply'])->name('job.apply');
     Route::post('/job/{job}/apply', [JobSeekerController::class, 'store'])->name('job.store');
     Route::get('/job_seeker/dashboard/applications', [JobSeekerController::class, 'myApplications'])->name('job_seeker.applications');
+    Route::get('/job_seeker/profile', [JobSeekerController::class, 'profile'])->name('job_seeker.profile');
+    Route::post('/job_seeker/update-password', [JobSeekerController::class, 'updatePassword'])->name('job_seeker.update_password');
 });
 
 
 
+
+
+Route::get('/test-listener', function () {
+    $application = Application::first(); // Replace with an actual application ID
+    event(new ApplicationCreated($application));
+
+    return 'Listener tested!';
+});
 
 Route::get('/', function () {
     return view('welcome');

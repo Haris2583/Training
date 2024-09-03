@@ -21,7 +21,8 @@
             <nav>
                 <ul>
                 <li><a href="{{ route('job_seeker.applications') }}">My Applications</a></li>
-                <li><a href="#">Profile</a></li>
+                <li><a href="{{ route('job_seeker.profile') }}">Profile</a></li>
+
                     <li>
                         <form method="POST" action="{{ route('job_seeker.logout') }}" style="display:inline;">
                             @csrf

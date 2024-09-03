@@ -38,4 +38,10 @@ class Application extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::observe(\App\Observers\ApplicationObserver::class);
+    }
 }

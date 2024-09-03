@@ -1,4 +1,10 @@
 <x-guest-layout>
+
+    <h1 class="text-xl font-semibold text-center mb-2">Job Voyage</h1>
+    <p class="text-2xl font-semibold text-center mb-6">Indeed! you will get a job here</p>
+
+
+    <h1 class="text-xl font-semibold text-center mb-2">Login</h1>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 

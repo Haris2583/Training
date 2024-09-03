@@ -38,6 +38,8 @@
                 <ul>
                 <li><a href="{{ route('employer.jobs.create') }}">Post Jobs</a></li>
                 <li><a href="{{ route('employer.jobs.index') }}">Manage Jobs</a></li>
+                <li><a href="{{ route('employer.candidates.search') }}">Search Candidates</a></li>
+
 
                     <li>
                     <form method="POST" action="{{ route('employer.logout') }}" style="display:inline;">

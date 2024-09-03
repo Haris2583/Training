@@ -6,6 +6,9 @@ use App\Repositories\JobRepository;
 use App\Models\PostJob;
 use App\Enums\JobStatus;
 use Illuminate\Http\Request;
+use App\Models\User;
+
+
 use Log;
 class PostJobController extends Controller
 {
@@ -44,4 +47,39 @@ class PostJobController extends Controller
         $this->jobRepository->updateJobStatus($job, JobStatus::Rejected);
         return redirect()->route('admin.jobs.index')->with('success', 'Job rejected successfully.');
     }
+
+    public function manageUsers()
+{
+    $users = User::all(); // Fetch all users
+    return view('admin.manage_users', compact('users'));
+}
+
+public function editUser($id)
+{
+    $user = User::findOrFail($id); // Fetch user by ID
+    return view('admin.edit_user', compact('user'));
+}
+
+public function updateUser(Request $request, $id)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email,' . $id,
+        // Additional validation rules
+    ]);
+
+    $user = User::findOrFail($id);
+    $user->update($request->only(['name', 'email', 'role'])); // Update the user details
+
+    return redirect()->route('admin.manage_users')->with('success', 'User updated successfully.');
+}
+
+public function deleteUser($id)
+{
+    $user = User::findOrFail($id);
+    $user->delete(); // Delete the user
+
+    return redirect()->route('admin.manage_users')->with('success', 'User deleted successfully.');
+}
+
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Application Details</title>
-    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/job.css') }}">
     <style>
         .details-container {
             max-width: 600px;
@@ -41,8 +41,6 @@
                 <li><a href="{{ route('employer.dashboard') }}">Dashboard</a></li>
 
                     <li><a href="{{ route('employer.jobs.create') }}">Post Jobs</a></li>
-                    <li><a href="{{ route('employer.candidates.search') }}">Search Candidates</a></li>
-
                     <li>
                         <form method="POST" action="{{ route('employer.logout') }}" style="display:inline;">
                             @csrf
@@ -54,22 +52,33 @@
         </header>
 
         <main>
-            <h1>Application Details</h1>
-            <div class="details-container">
-                <h1>Application for Job: {{ $application->job->title }}</h1>
-                <p><strong>Name:</strong> {{ $application->name }}</p>
-                <p><strong>Email:</strong> {{ $application->email }}</p>
-                <p><strong>Address:</strong> {{ $application->address }}</p>
-                <p><strong>Country:</strong> {{ $application->country }}</p>
-                <p><strong>City:</strong> {{ $application->city }}</p>
-                <p><strong>Experience:</strong> {{ $application->experience }}</p>
-                <p><strong>Current Job:</strong> {{ $application->current_job }}</p>
-                <p><strong>Expected Salary:</strong> {{ $application->expected_salary }}</p>
-                <p><strong>Current Salary:</strong> {{ $application->current_salary }}</p>
-                <p><strong>CV:</strong> 
-                 <a href="{{ asset('storage/' . $application->cv_path) }}" class="btn btn-primary" download>  Download CV</a></p>
+        <h1>Search Candidates</h1>
+        <div class="job-post-container">
 
+        <form action="{{ route('employer.candidates.results') }}" method="GET" class="mb-4">
+            <div class="form-group">
+                <input type="text" name="name" class="form-control" placeholder="Name">
             </div>
+            <div class="form-group">
+                <input type="text" name="country" class="form-control" placeholder="Skills (e.g., Pakistan, US)">
+            </div>
+            <div class="form-group">
+                <input type="text" name="city" class="form-control" placeholder="Location">
+            </div>
+            <div class="form-group">
+                <select name="experience" class="form-control">
+                    <option value="">Select Experience Level</option>
+                    <option value="1">1 year</option>
+                    <option value="2">2 year</option>
+                    <option value="3">3 year</option>
+                    <option value="4">4 year</option>
+                    <option value="5">5 year</option>
+
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        </div>
         </main>
 
         <footer class="dashboard-footer">
